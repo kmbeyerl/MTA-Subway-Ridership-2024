@@ -139,7 +139,7 @@ BEGIN
             gtfs_stop_ids,
             CASE WHEN borough = 'M' THEN 'Manhattan'
                  WHEN borough = 'Bx' THEN 'Bronx'
-                 WHEN borough = 'B' THEN 'Brooklyn'
+                 WHEN borough = 'Bk' THEN 'Brooklyn'
                  WHEN borough = 'Q' THEN 'Queens'
                  WHEN borough = 'SI' THEN 'Staten Island'
             END AS borough,
