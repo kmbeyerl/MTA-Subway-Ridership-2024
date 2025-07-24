@@ -64,3 +64,30 @@ CREATE TABLE silver.jan_ridership_2024 (
 	dwh_create_date DATETIME DEFAULT GETDATE()
 );
 GO
+
+IF OBJECT_ID ('silver.subway_stations', 'U') IS NOT NULL
+	DROP TABLE silver.subway_stations;
+GO
+
+CREATE TABLE silver.subway_stations (
+	gtfs_stop_id NVARCHAR(50),
+	station_id INT,
+	complex_id INT,
+	division NVARCHAR(50),
+	line NVARCHAR(50),
+	stop_name NVARCHAR(255),
+	borough NVARCHAR(50),
+	cbd NVARCHAR(50),
+	daytime_routes NVARCHAR(50),
+	structure NVARCHAR(50),
+	gtfs_latitude DECIMAL(8,6),
+	gtfs_longitude DECIMAL(9,6),
+	north_direction_label NVARCHAR(50),
+	south_direction_label NVARCHAR(50),
+	ada NVARCHAR(50),
+	ada_northbound NVARCHAR(50),
+	ada_southbound NVARCHAR(50),
+	ada_notes NVARCHAR(255),
+	georeference NVARCHAR(50)
+);
+GO
