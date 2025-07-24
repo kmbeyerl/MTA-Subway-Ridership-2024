@@ -71,6 +71,23 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT '----------------';
 
+		SET @start_time = GETDATE();
+		PRINT '>> Truncating Table: bronze.subway_stations';
+		TRUNCATE TABLE bronze.subway_stations;
+
+		PRINT '>> Inserting Date Into: bronze.subway_stations';
+		BULK INSERT bronze.subway_stations
+		FROM 'C:\Users\kiery\Documents\Data\SQL\Subway Ridership 2024\MTA_Subway_Stations_20250724.csv'
+		WITH (
+				FIRSTROW = 2,
+				FIELDTERMINATOR = ',',
+				FORMAT = 'CSV',
+				ROWTERMINATOR = '0x0a'
+		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+		PRINT '----------------';
+
 		SET @batch_end_time = GETDATE();
 		PRINT '==========================================';
 		PRINT 'Loading Bronze Layer is Completed';
