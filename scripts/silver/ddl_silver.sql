@@ -88,6 +88,7 @@ CREATE TABLE silver.subway_stations (
 	ada_northbound NVARCHAR(50),
 	ada_southbound NVARCHAR(50),
 	ada_notes NVARCHAR(255),
-	georeference NVARCHAR(50)
+	georeference NVARCHAR(50),
+	dwh_create_date DATETIME DEFAULT GETDATE()
 );
 GO
