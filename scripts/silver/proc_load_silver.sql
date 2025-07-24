@@ -158,6 +158,78 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT '----------------';
 
+        PRINT '----------------------------------------';
+		PRINT 'Loading Subway Stations';
+		PRINT '----------------------------------------';
+
+        SET @start_time = GETDATE();
+        PRINT '>> Truncating Table: silver.subway_stations';
+        TRUNCATE TABLE silver.subway_stations;
+
+        PRINT '>> Inserting Data Into: silver.subway_stations';
+        INSERT INTO silver.subway_stations (
+	        gtfs_stop_id,
+	        station_id,
+	        complex_id,
+	        division,
+	        line,
+	        stop_name,
+	        borough,
+	        cbd,
+	        daytime_routes,
+	        structure,
+	        gtfs_latitude,
+	        gtfs_longitude,
+	        north_direction_label,
+	        south_direction_label,
+	        ada,
+	        ada_northbound,
+	        ada_southbound,
+	        ada_notes,
+	        georeference
+        )
+
+        SELECT 
+	        gtfs_stop_id,
+	        station_id,
+	        complex_id,
+	        division,
+	        line,
+	        stop_name,
+	        CASE borough
+		        WHEN 'Q' THEN 'Queens'
+		        WHEN 'Bk' THEN 'Brooklyn'
+		        WHEN 'Bx' THEN 'Bronx'
+		        WHEN 'M' THEN 'Manhattan'
+		        WHEN 'SI' THEN 'Staten Island'
+	        END AS borough,
+	        cbd,
+	        daytime_routes,
+	        structure,
+	        gtfs_latitude,
+	        gtfs_longitude,
+	        north_direction_label,
+	        south_direction_label,
+	        CASE ada
+		        WHEN 0 THEN 'Not ADA-accessible'
+		        WHEN 1 THEN 'Fully Accessible'
+		        WHEN 2 THEN 'Partially Accessible'
+	        END AS ada,
+	        CASE ada_northbound
+		        WHEN 0 THEN 'Not ADA-accessible'
+		        WHEN 1 THEN 'Fully Accessible'
+	        END AS ada_northbound,
+	        CASE ada_southbound
+		        WHEN 0 THEN 'Not ADA-accessible'
+		        WHEN 1 THEN 'Fully Accessible'
+	        END AS ada_southbound,
+	        ada_notes,
+	        georeference
+        FROM bronze.subway_stations;
+        SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+		PRINT '----------------';
+
         SET @batch_end_time = GETDATE();
 		PRINT '==========================================';
 		PRINT 'Loading Silver Layer is Completed';
