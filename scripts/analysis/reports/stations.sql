@@ -1,3 +1,13 @@
+/*
+=============================================================================
+Report Script: Create Stations View
+=============================================================================
+Script Purpose:
+	Performs transformations and combines data from the Gold layer to produce
+	a report giving an overview of the performance of each Subway station.
+=============================================================================
+*/
+
 IF OBJECT_ID ('gold.report_stations','V') IS NOT NULL
         DROP VIEW gold.report_stations;
 GO
