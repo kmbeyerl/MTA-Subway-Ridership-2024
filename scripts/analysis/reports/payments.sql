@@ -1,3 +1,13 @@
+/*
+=============================================================================
+Report Script: Create Payments View
+=============================================================================
+Script Purpose:
+	Performs transformations and combines data from the Gold layer to produce
+	a report giving an overview of the performance of each payment method
+=============================================================================
+*/
+
 IF OBJECT_ID ('gold.report_payments','V') IS NOT NULL
         DROP VIEW gold.report_payments;
 GO
