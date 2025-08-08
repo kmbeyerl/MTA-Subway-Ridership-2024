@@ -103,7 +103,7 @@ SELECT
 FROM cte_riders
 ORDER BY month
 
--- ADD TITLE FOR THIS QUERY
+-- Finding the percentage of uses for each payment subcategory
 WITH cte_payments AS (
 SELECT
     payment_method,
@@ -122,7 +122,7 @@ SELECT
 FROM cte_payments
 ORDER BY pct_total DESC
 
--- ADD TITLE FOR THIS QUERY
+-- Finding the percentage of uses for each payment subcategory (partitioned by payment categories)
 WITH cte_payments AS (
 SELECT
     payment_method,
@@ -141,7 +141,7 @@ SELECT
 FROM cte_payments
 ORDER BY payment_method, pct_total DESC
 
--- ADD TITLE FOR THIS QUERY
+-- Finding percent total of riders for each Burough
 WITH cte_boroughs AS (
 SELECT
     c.borough,
@@ -160,29 +160,7 @@ SELECT
 FROM cte_boroughs
 ORDER BY pct_total DESC
 
--- ADD TITLE FOR THIS QUERY
-/* NOTE: total_riders has a higher number than the actual number of riders
-due to the fact that a number of stations are part of multiple lines.
-Meaning a single rider from one station could be counted as a rider for two or more lines*/
-WITH cte_lines AS (
-SELECT
-    c.line,
-    SUM(r.ridership) AS line_riders
-FROM gold.fact_ridership r
-LEFT JOIN gold.dim_complexes c
-    ON c.complex_id = r.station_complex_id
-GROUP BY c.line
-)
-
-SELECT 
-    line,
-    line_riders,
-    SUM(line_riders) OVER () AS total_riders,
-    ROUND((CAST(line_riders AS FLOAT) / SUM(line_riders) OVER ())*100, 2) AS pct_total
-FROM cte_lines
-ORDER BY pct_total DESC
-
--- ADD TITLE FOR THIS QUERY
+-- Segmenting number of riders per day into four categories and counting how many days for each category
 WITH rider_segment AS (
 SELECT
     DATETRUNC(day, transit_timestamp) AS day,
